@@ -68,11 +68,17 @@ class TasksList extends React.Component {
         <br />
         {this.state.tasks.map(task => {
           return (
-            <p key={task.id} 
-               className={this.taskClassName(task)}
-               onDoubleClick={() => this.completeTask(task)}>
-                {task.description}
-            </p>
+            <div key={task.id} >
+              <p className={this.taskClassName(task)}>
+                <button
+                    className="ui button"
+                    onClick={() => this.completeTask(task)}>
+                    x
+                </button>
+                <span>{task.description}</span>
+              </p>
+              <br/>
+            </div>
           )
         })}
       </div>
