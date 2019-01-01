@@ -5,7 +5,8 @@ class TasksList extends React.Component {
   constructor() {
     super()
     this.state = {
-      tasks: []
+      todoTasks: [],
+      completedTasks: []
     }
   }
 
@@ -13,7 +14,7 @@ class TasksList extends React.Component {
     fetch("/tasks")
       .then(response => response.json())
       .then(data => {
-        this.setState({tasks: data.tasks})
+        this.setState({ todoTasks: data.tasks })
       })
   }
 
@@ -27,14 +28,9 @@ class TasksList extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
-        const newTasks = this.state.tasks.map(task => {
-          if(task.id == data.task.id) {
-            return data.task
-          } else {
-            return task
-          }
-        })
-        this.setState({ tasks: newTasks })
+        const todoTasks = this.state.todoTasks.filter(task => task.id != data.task.id)
+        const completedTasks = [data.task, ...this.state.completedTasks]
+        this.setState({ todoTasks, completedTasks })
       })
   }
 
@@ -49,9 +45,8 @@ class TasksList extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
-        const newTasks = this.state.tasks
-        newTasks.push(data.task)
-        this.setState({tasks: newTasks})
+        const todoTasks = this.state.todoTasks.concat(data.task)
+        this.setState({ todoTasks })
         input.value = ''
       })
   }
@@ -66,18 +61,33 @@ class TasksList extends React.Component {
           </div>
         </form>
         <br />
-        {this.state.tasks.map(task => {
+        {this.state.todoTasks.map(task => {
           return (
             <div key={task.id} >
               <p className={this.taskClassName(task)}>
                 <button
-                    className="ui button"
+                    className="ui icon button"
                     onClick={() => this.completeTask(task)}>
-                    x
+                    &#x2714;
                 </button>
-                <span>{task.description}</span>
+                <span>&nbsp;{task.description}</span>
               </p>
               <br/>
+            </div>
+          )
+        })}
+        {this.state.completedTasks.map(task => {
+          return (
+            <div key={task.id} >
+              <p className={this.taskClassName(task)}>
+                <button
+                  className="ui icon button"
+                  onClick={() => this.completeTask(task)}>
+                  &#x2714;
+                </button>
+                <span>&nbsp;{task.description}</span>
+              </p>
+              <br />
             </div>
           )
         })}
