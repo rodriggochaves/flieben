@@ -7,6 +7,12 @@ class TasksController < ApplicationController
     render json: { tasks: @tasks }
   end
 
+  def create
+    task = Task.new(description: params[:description])
+    task.save
+    render json: { task: task }, status: 201
+  end
+
   def complete
     task = Task.find params[:id]
     task.update(completed: true)

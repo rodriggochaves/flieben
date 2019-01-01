@@ -38,9 +38,34 @@ class TasksList extends React.Component {
       })
   }
 
+  createTask = (event) => {
+    event.preventDefault()
+    const input = event.target.querySelectorAll("input[name='description']")[0]
+    const description = input.value
+    fetch('/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ "description": description })
+    })
+      .then(response => response.json())
+      .then(data => {
+        const newTasks = this.state.tasks
+        newTasks.push(data.task)
+        this.setState({tasks: newTasks})
+        input.value = ''
+      })
+  }
+
   render() { 
     return (
       <div>
+        <br />
+        <form className="new-task ui form" action="/tasks" onSubmit={(event) => { this.createTask(event) }}>
+          <div className="field">
+            <input type="text" name="description"/>
+          </div>
+        </form>
+        <br />
         {this.state.tasks.map(task => {
           return (
             <p key={task.id} 
