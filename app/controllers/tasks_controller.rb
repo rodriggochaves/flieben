@@ -18,4 +18,10 @@ class TasksController < ApplicationController
     task.update(completed: !task.completed)
     render json: { task: task }, status: 200
   end
+
+  def dontpad
+    project = Project.first
+    project.update(content: params[:text])
+    head :ok
+  end
 end
