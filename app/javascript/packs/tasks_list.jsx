@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-class TasksList extends React.Component {
+export class TasksList extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -11,6 +11,10 @@ class TasksList extends React.Component {
   }
 
   componentDidMount() {
+    this.fetchTodoTasks()
+  }
+
+  fetchTodoTasks() {
     fetch("/tasks")
       .then(response => response.json())
       .then(data => {
@@ -51,6 +55,12 @@ class TasksList extends React.Component {
       })
   }
 
+  editTask = (event, task) => {
+    event.preventDefault()
+    event.target.innerHTML = 'finish'
+    event.target.closest(".task").querySelectorAll("input[type='text']")[0].removeAttribute('readOnly')
+  }
+
   render() { 
     return (
       <div>
@@ -64,15 +74,30 @@ class TasksList extends React.Component {
         {this.state.todoTasks.map(task => {
           return (
             <div key={task.id} >
-              <p className={this.taskClassName(task)}>
-                <button
-                    className="ui icon button"
-                    onClick={() => this.completeTask(task)}>
-                    &#x2714;
-                </button>
-                <span>&nbsp;{task.description}</span>
-              </p>
-              <br/>
+              <form className={this.taskClassName(task) + " ui form"}>
+                <div className="fields">
+                  <div className="fourteen wide field">
+                    <input
+                      type="text"
+                      readOnly={true}
+                      onDoubleClick={event => this.editTask(event, task)}
+                      defaultValue={task.description}
+                    />
+                  </div>
+                  <div className="two wide field">
+                    <button
+                      className="ui icon button"
+                      onClick={event => this.completeTask(event)}>
+                      &#x2714;
+                    </button>
+                    <button
+                      className="ui button"
+                      onClick={event => this.editTask(event, task)}>
+                      edit
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           )
         })}
