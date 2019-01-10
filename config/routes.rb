@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'home#index'
+  root 'home#dontpad'
 
   get '/tasks' => 'tasks#index'
   post '/tasks' => 'tasks#create'

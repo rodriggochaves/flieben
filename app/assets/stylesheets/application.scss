@@ -35,6 +35,10 @@ p.task {
   margin-left: 10px;
 }
 
+p.task span {
+  margin-left: 10px;
+}
+
 .new-task > .field {
   width: 100%;
   height: 30px;
@@ -51,4 +55,16 @@ p.task {
 
 .completed {
   text-decoration: line-through;
+}
+
+textarea {
+  border: 0;
+  width: 100%;
+  height: 100vh;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+textarea:focus {
+  outline: none;
 }
