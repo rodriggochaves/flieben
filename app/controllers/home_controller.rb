@@ -3,5 +3,7 @@ class HomeController < ApplicationController
 
   def index; end
 
-  def dontpad; end
+  def dontpad
+    @project = Project.last
+  end
 end
