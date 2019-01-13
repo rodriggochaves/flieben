@@ -8,13 +8,10 @@ describe("Dontpad", () => {
   })
 
   it("is a textarea that sends its content to server", () => {
-    window.fetch = jest.fn()
+    const mock = jest.fn()
     const wrapper = shallow(<Dontpad />)
+    wrapper.instance().requestUpdate = mock
     wrapper.find("textarea").simulate('change', { target: { value: "text" } })
-    expect(window.fetch).toHaveBeenCalledWith('/dontpad', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ "text": "text" })
-    })
+    expect(mock).toHaveBeenCalled()
   })
 })
