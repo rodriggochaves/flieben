@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'dontpad#home'
+  root 'dontpad#index'
 
   post 'dontpad' => 'dontpad#update'
 end

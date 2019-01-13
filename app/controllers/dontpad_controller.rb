@@ -2,7 +2,7 @@ class DontpadController < ApplicationController
   http_basic_authenticate_with name: ENV['USERNAME'], password: ENV['PASSWORD'] if Rails.env.production?
   protect_from_forgery unless: -> { request.format.json? }
 
-  def home
+  def index
     @project = Project.last
   end
 
